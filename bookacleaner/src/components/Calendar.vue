@@ -2,11 +2,7 @@
   <div>
     <!-- let's just list the events for now -->
     <ul>
-      <li v-for="slot in slots">{{slot.day}}
-        <ul>
-          <li v-for="startTime in slot.startTimes">{{startTime.start}} {{startTime.possible}}</li>
-        </ul>
-      </li>
+      <li v-for="timeSlot in timeSlots">{{timeSlot.start}} {{timeSlot.possible}}</li>
     </ul>
   </div>
 </template>
@@ -15,7 +11,7 @@
 export default {
   name: 'Calendar',
   props: {
-    slots: {
+    timeSlots: {
       type: Array
     }
   }

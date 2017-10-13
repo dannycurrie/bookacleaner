@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Calendar v-bind:slots="slots" />
+    <Calendar v-bind:timeSlots="timeSlots" />
     <BookingInfo/>
   </div>
 </template>
@@ -9,6 +9,7 @@
 import Calendar from './components/Calendar'
 import BookingInfo from './components/BookingInfo'
 import Axios from 'axios'
+const helper = require('./timeSlotHelper')
 
 export default {
   name: 'app',
@@ -17,14 +18,14 @@ export default {
   },
   data() {
     return {
-      slots: []
+      timeSlots: []
     }
   },
   created () {
     // call to api and get available time slots
     Axios.get(`https://private-anon-04dc74bb9a-housekeepavailability.apiary-mock.com/availability/?weekBeginning=$this.weekBeginnin)&visitDuration=2.5&postcode=EC1R%203BU`)
       .then(response => {
-        this.slots = response.data
+        this.timeSlots = helper.createTimeSlotsFromAPIData(response.data)
       }).catch(error => {
         console.log(error)
         // TODO - handle this more gracefully
