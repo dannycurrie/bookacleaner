@@ -12,6 +12,7 @@
     "test": "npm run unit"
   },
   "dependencies": {
+    "express": "^4.16.2",
     "vue": "^2.4.2"
   },
   "devDependencies": {
