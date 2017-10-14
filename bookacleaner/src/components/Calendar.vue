@@ -1,18 +1,32 @@
 <template>
-  <div>
-    <!-- let's just list the events for now -->
-    <ul>
-      <li v-for="timeSlot in timeSlots">{{timeSlot.start}} {{timeSlot.possible}}</li>
-    </ul>
+  <div id="cal">
   </div>
 </template>
 
 <script>
+const calendarWrapper = require('./calendarWrapper').calendarWrapper()
+
 export default {
   name: 'Calendar',
   props: {
     timeSlots: {
       type: Array
+    }
+  },
+  data () {
+    init: false
+  },
+  watch: {
+    /*
+     * when timeslots changes, initialise or refresh the calendar
+     */
+    timeSlots: function () {
+      if(!this.init) {
+        calendarWrapper.initCalendar(this)
+        this.init = true
+      } else {
+        calendarWrapper.refreshCalendar(this)
+      }
     }
   }
 }
