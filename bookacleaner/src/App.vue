@@ -11,6 +11,11 @@ import BookingInfo from './components/BookingInfo'
 import Axios from 'axios'
 const helper = require('./timeSlotHelper')
 
+require('../assets/css/bootstrap.css')
+require('../assets/css/fullcalendar.css')
+require('../assets/css/style.css')
+require('../assets/css/font-awesome.min.css')
+
 export default {
   name: 'app',
   components: {
@@ -80,6 +85,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 100px;
 }
 </style>
