@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Calendar v-bind:timeSlots="timeSlots" />
+    <Calendar v-bind:timeSlots="timeSlots" v-on:timeSlotSelected="timeSlotSelected"/>
     <BookingInfo/>
   </div>
 </template>
@@ -18,7 +18,8 @@ export default {
   },
   data() {
     return {
-      timeSlots: []
+      timeSlots: [],
+      selectedTimeSlot: {}
     }
   },
   created () {
@@ -31,6 +32,30 @@ export default {
         // TODO - handle this more gracefully
         alert('We were unable to find the availability for this week!')
       })
+  },
+  methods: {
+    /*
+     * Begins a new selection
+     * Not using arrow functions here to avoid context issues
+     */
+    timeSlotSelected: function (selection) {
+      // deselect previous selection
+      this.timeSlots.map(slot => slot.selected = false)
+      this.selectedTimeSlot = helper.findMatchingTimeSlot(selection, this.timeSlots)
+      // if we have a valid selection
+      if(this.selectedTimeSlot) {
+        this.selectedTimeSlot.selected = true
+        // if the selection has specified an end time, add that
+        if (selection.end) {
+          this.selectedTimeSlot.end = selection.end
+        }
+        // notify components who watch the timeslots that we have an update
+        // TODO - there must be a better way than this - perhaps watch deep = true?
+        this.timeSlots = this.timeSlots.slice()
+      } else {
+        console.log('Invalid selection', selection)
+      }
+    }
   }
 }
 </script>

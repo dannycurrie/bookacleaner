@@ -4,7 +4,8 @@
 </template>
 
 <script>
-const calendarWrapper = require('./calendarWrapper').calendarWrapper()
+const helper = require('../timeSlotHelper')
+let calendarWrapper = {}
 
 export default {
   name: 'Calendar',
@@ -13,8 +14,13 @@ export default {
       type: Array
     }
   },
+  created () {
+    calendarWrapper = require('./calendarWrapper').calendarWrapper(this)
+  },
   data () {
-    init: false
+    return {
+      init: false
+    }
   },
   watch: {
     /*
@@ -22,11 +28,19 @@ export default {
      */
     timeSlots: function () {
       if(!this.init) {
-        calendarWrapper.initCalendar(this)
+        calendarWrapper.initCalendar()
         this.init = true
       } else {
-        calendarWrapper.refreshCalendar(this)
+        calendarWrapper.refreshCalendar()
       }
+    }
+  },
+  methods: {
+    selectSlot: function (event) {
+      //  create slot to represent selection
+      let slot = helper.createSlotFromEvent(event, false, true)
+      // emit selection event
+      this.$emit('timeSlotSelected', slot)
     }
   }
 }

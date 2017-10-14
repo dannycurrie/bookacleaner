@@ -6,14 +6,16 @@ require('fullcalendar')
 * Vuejs is not ideal, so we will wrap it to isolate the
 * implementation detail from the vue comonent itself
 */
-export function calendarWrapper() {
+export function calendarWrapper(comp) {
 
+  const component = comp
   const unavailaleColour = '#384452'
   const selectedColour = '#00B3FE'
   const unavailableMsg = 'Not available'
   const selectedMsg = 'Selected'
 
   let createFCEvents = (timeSlots) => {
+    console.log(timeSlots)
     let fcEvents = []
     if (timeSlots) {
       fcEvents = timeSlots.filter(timeSlot => {
@@ -47,7 +49,7 @@ export function calendarWrapper() {
       *
       * @param comp: the component to add the calendar to
       */
-      initCalendar: (component) => {
+      initCalendar: () => {
         component.cal = $(component.$el)
 
         let args = {
@@ -63,7 +65,8 @@ export function calendarWrapper() {
           firstDay: 1, // first day of the week is monday
           eventOverlap: false,
           timeFormat: 'HH:mm',
-          events: createFCEvents(component.timeSlots)
+          events: createFCEvents(component.timeSlots),
+          dayClick: component.selectSlot
         }
         console.log('initiating calendar')
         component.cal.fullCalendar(args)
@@ -81,7 +84,7 @@ export function calendarWrapper() {
       /*
       * Refreshes the calendar's events
       */
-      refreshCalendar: (component) => {
+      refreshCalendar: () => {
         console.log('refreshing calendar')
         component.cal.fullCalendar('removeEvents')
         component.cal.fullCalendar('addEventSource', createFCEvents(component.timeSlots))

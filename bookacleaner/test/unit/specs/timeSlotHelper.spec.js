@@ -1,5 +1,5 @@
 const helper = require('../../../src/timeSlotHelper')
-const expect = require('chai').expect
+const chai = require('chai')
 
 describe('Convert raw data to time slots', () => {
   it('takes nested raw api data and creates flat list of time slots', () => {
@@ -76,5 +76,64 @@ describe('Convert raw data to time slots', () => {
     expect(timeSlots[0].start).to.equal('2016-12-05 08:00:00')
     expect(timeSlots[0].end).to.equal('2016-12-05 08:30:00')
     expect(timeSlots[0].possible).to.equal(false)
+  })
+})
+
+describe('Find a matching timeslot in a collection of timeslots', () => {
+  it('takes a timeslot and looks for a matching timeslot in the collection', () => {
+    let timeSlots = [
+      {
+        start: '2016-12-05 08:00:00',
+        end: '2016-12-05 08:30:00',
+        possible: true
+      },      
+      {
+        start: '2016-12-05 08:30:00',
+        end: '2016-12-05 09:00:00',
+        possible: true
+      },
+      {
+        start: '2016-12-05 09:00:00',
+        end: '2016-12-05 09:30:00',
+        possible: false
+      },
+      {
+        start: '2016-12-05 09:30:00',
+        end: '2016-12-05 10:00:00',
+        possible: true
+      },
+      {
+        start: '2016-12-05 10:00:00',
+        end: '2016-12-05 11:00:00',
+        possible: true
+      },
+    ]
+
+    let simpleCaseSlot = {
+        start: '2016-12-05 10:00:00',
+        end: '2016-12-05 11:00:00',
+        selected: true
+    }
+
+    let simpleResult = helper.findMatchingTimeSlot(simpleCaseSlot, timeSlots)
+    should.exist(simpleResult)
+    expect(simpleResult).to.have.property('start').equal('2016-12-05 10:00:00')
+    // test a case in which selection is in the middle of a slot
+    let midSlotCaseSlot = {
+        start: '2016-12-05 10:30:00',
+        end: '2016-12-05 11:00:00',
+        selected: true
+    }
+    let midSlotResult = helper.findMatchingTimeSlot(midSlotCaseSlot, timeSlots)
+    should.exist(midSlotResult)
+    expect(midSlotResult).to.have.property('start').equal('2016-12-05 10:00:00')
+    // test a case in which selection is not present
+    let invalidSlot = {
+        start: '2016-12-05 12:30:00',
+        end: '2016-12-05 13:00:00',
+        selected: true
+    }
+    let invalidSlotResult = helper.findMatchingTimeSlot(invalidSlot, timeSlots)
+    should.not.exist(invalidSlotResult)
   })
 })
