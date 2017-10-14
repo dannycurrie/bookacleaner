@@ -66,12 +66,15 @@ export function calendarWrapper(comp) {
           eventOverlap: false,
           timeFormat: 'HH:mm',
           events: createFCEvents(component.timeSlots),
-          dayClick: component.selectSlot
+          dayClick: component.selectSlot,
+          eventResize: (event) => {
+            component.changeSlotDuration(event)
+          }
         }
         console.log('initiating calendar')
         component.cal.fullCalendar(args)
+        // set week to the week we are looking at
         if (args.events && args.events.length > 0) {
-          // todo - what if empty?
           component.cal.fullCalendar('gotoDate', args.events[0].start)
         }
         return component

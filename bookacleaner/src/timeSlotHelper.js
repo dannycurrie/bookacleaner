@@ -55,10 +55,11 @@ export function createTimeSlotsFromAPIData (rawData) {
  * @param {*} selected true if the slot is selected
  */
 export function createSlotFromEvent (event, setEnd, selected) {
-    //  create slot to represent selection
+    //  return a timeslot to represent selection
     return {
-      start: event.format('YYYY-MM-DD HH:mm:ss'),
-      end: setEnd ?  event.end.format('YYYY-MM-DD HH:mm:ss') : undefined,
+      // if there is a start property, use that, otherwise just format the event itself
+      start: event.start ? event.start.format('YYYY-MM-DD HH:mm:ss') : event.format('YYYY-MM-DD HH:mm:ss'),
+      end: (setEnd && event.end) ?  event.end.format('YYYY-MM-DD HH:mm:ss') : undefined,
       selected: selected
     }
 }

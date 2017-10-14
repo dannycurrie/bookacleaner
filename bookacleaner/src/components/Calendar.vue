@@ -26,19 +26,27 @@ export default {
     /*
      * when timeslots changes, initialise or refresh the calendar
      */
-    timeSlots: function () {
-      if(!this.init) {
-        calendarWrapper.initCalendar()
-        this.init = true
-      } else {
-        calendarWrapper.refreshCalendar()
-      }
+    timeSlots: {handler: function () {
+        if(!this.init) {
+          calendarWrapper.initCalendar()
+          this.init = true
+        } else {
+          calendarWrapper.refreshCalendar()
+        }
+      },
+      deep: true
     }
   },
   methods: {
     selectSlot: function (event) {
       //  create slot to represent selection
       let slot = helper.createSlotFromEvent(event, false, true)
+      // emit selection event
+      this.$emit('timeSlotSelected', slot)
+    },
+    changeSlotDuration: function (event) {
+      //  create slot to represent selection, including new end date
+      let slot = helper.createSlotFromEvent(event, true, true)
       // emit selection event
       this.$emit('timeSlotSelected', slot)
     }

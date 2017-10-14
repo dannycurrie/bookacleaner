@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Calendar v-bind:timeSlots="timeSlots" v-on:timeSlotSelected="timeSlotSelected"/>
-    <BookingInfo/>
+    <BookingInfo v-bind:selectedTimeSlot="selectedTimeSlot"/>
   </div>
 </template>
 
@@ -49,9 +49,6 @@ export default {
         if (selection.end) {
           this.selectedTimeSlot.end = selection.end
         }
-        // notify components who watch the timeslots that we have an update
-        // TODO - there must be a better way than this - perhaps watch deep = true?
-        this.timeSlots = this.timeSlots.slice()
       } else {
         console.log('Invalid selection', selection)
       }
