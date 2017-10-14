@@ -64,6 +64,12 @@ export function createSlotFromEvent (event, setEnd, selected) {
     }
 }
 
+/**
+ * Given a selection and a collection of timeslots, will return the timeslot
+ * with a matching start time
+ * @param {*} selection 
+ * @param {*} timeSlots 
+ */
 export function findMatchingTimeSlot (selection, timeSlots) {
   let matchingSlot
   matchingSlot = timeSlots.find(slot => { return slot.start === selection.start })
@@ -79,4 +85,22 @@ export function findMatchingTimeSlot (selection, timeSlots) {
         matchingSlot = timeSlots.find(slot => { return slot.start === moment(startDate).format('YYYY-MM-DD HH:mm:ss') })
       }
       return matchingSlot
+}
+
+/**
+ * Given a timeslot, will return a human readable string representing it
+ * @param {*} timeSlot 
+ */
+export function getReadableTimeSlotString (timeSlot) {
+  if(timeSlot.start && timeSlot.end) {
+    let startDate = new Date(timeSlot.start)
+    let endDate = new Date(timeSlot.end)
+    let duration = Math.abs(startDate - endDate) / 36e5
+    return moment(startDate).format('MMMM Do h:mma') + ' for ' + duration + (duration === 1 ? ' hour' : ' hours')
+  } else {
+    throw {
+     name: 'TypeError',
+     message: 'Unrecognised timeslot format: must have start and end: ' + JSON.stringify(timeSlot) 
+    }
+  }
 }

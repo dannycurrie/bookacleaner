@@ -137,3 +137,17 @@ describe('Find a matching timeslot in a collection of timeslots', () => {
     should.not.exist(invalidSlotResult)
   })
 })
+
+describe('Convert timeslot into human readable string', () => {
+  it('should take a time slot and create a readable string', () => {
+    let timeSlot = {
+        start: '2016-12-05 08:00:00',
+        end: '2016-12-05 08:30:00',
+        possible: true
+      }
+
+      let result = helper.getReadableTimeSlotString(timeSlot)
+
+      expect(result).to.equal('December 5th 8:00am for 0.5 hours')
+  })
+})

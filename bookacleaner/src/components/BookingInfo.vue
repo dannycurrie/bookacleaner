@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+const helper = require('../timeSlotHelper')
+
 export default {
   name: 'BookingInfo',
   props: {
@@ -24,7 +27,7 @@ export default {
         this.currentSelection = ''
         return
       }
-      this.currentSelection = JSON.stringify(this.selectedTimeSlot)
+      this.currentSelection = helper.getReadableTimeSlotString(this.selectedTimeSlot)
     },
       // this ensures we pick up changes to end date
       deep: true
