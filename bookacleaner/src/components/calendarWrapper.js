@@ -65,6 +65,7 @@ export function calendarWrapper(comp) {
           firstDay: 1, // first day of the week is monday
           eventOverlap: false,
           timeFormat: 'HH:mm',
+          columnFormat: 'ddd D/M' ,
           events: createFCEvents(component.timeSlots),
           dayClick: component.selectSlot,
           eventResize: (event) => {

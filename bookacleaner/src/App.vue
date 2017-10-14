@@ -2,6 +2,7 @@
   <div id="app">
     <Calendar v-bind:timeSlots="timeSlots" v-on:timeSlotSelected="timeSlotSelected"/>
     <BookingInfo v-bind:selectedTimeSlot="selectedTimeSlot" v-on:sendBookingRequest="requestBooking"/>
+    <sweet-modal ref="successModal" icon="success" title="Booking Confirmed">{{this.confirmationMessage}}!</sweet-modal>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import Calendar from './components/Calendar'
 import BookingInfo from './components/BookingInfo'
 import Axios from 'axios'
+import { SweetModal } from 'sweet-modal-vue'
 const helper = require('./timeSlotHelper')
 
 require('../assets/css/bootstrap.css')
@@ -19,12 +21,13 @@ require('../assets/css/font-awesome.min.css')
 export default {
   name: 'app',
   components: {
-    Calendar, BookingInfo
+    Calendar, BookingInfo, SweetModal
   },
   data() {
     return {
       timeSlots: [],
-      selectedTimeSlot: {}
+      selectedTimeSlot: {},
+      confirmationMessage: ''
     }
   },
   created () {
@@ -67,7 +70,9 @@ export default {
         .then(response => {
           if(response.status === 201){
             console.log(response.data)
-            alert('success! Booked session with ' + response.data.cleaner.name)
+            let cleaner = response.data.cleaner.name
+            this.confirmationMessage = 'Slot booked with ' + cleaner + ' on ' + helper.getReadableTimeSlotString(this.selectedTimeSlot)
+            this.$refs.successModal.open()
           } else {
             alert('There was an issue requesting your booking!')
           }
