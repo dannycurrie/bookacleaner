@@ -1,6 +1,9 @@
 <template>
   <div>
     <p>{{currentSelection}}</p>
+    <p class="book-btn">
+      <a href="#" class="btn btn-theme" v-if="currentSelection !== ''" v-on:click="sendBookingRequest">Book this slot!</a>
+		</p>
   </div>
 </template>
 
@@ -31,6 +34,11 @@ export default {
     },
       // this ensures we pick up changes to end date
       deep: true
+    }
+  },
+  methods: {
+    sendBookingRequest: function () {
+      this.$emit('sendBookingRequest')
     }
   }
 }

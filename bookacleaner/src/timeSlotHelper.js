@@ -95,7 +95,7 @@ export function getReadableTimeSlotString (timeSlot) {
   if(timeSlot.start && timeSlot.end) {
     let startDate = new Date(timeSlot.start)
     let endDate = new Date(timeSlot.end)
-    let duration = Math.abs(startDate - endDate) / 36e5
+    let duration = getDuration(timeSlot)
     return moment(startDate).format('MMMM Do h:mma') + ' for ' + duration + (duration === 1 ? ' hour' : ' hours')
   } else {
     throw {
@@ -103,4 +103,31 @@ export function getReadableTimeSlotString (timeSlot) {
      message: 'Unrecognised timeslot format: must have start and end: ' + JSON.stringify(timeSlot) 
     }
   }
+}
+
+export function createBookingRequestFromTimeSlot (timeSlot) {
+  // first check slot is correctly formatted
+  if (timeSlot.start && timeSlot.end) {
+    let bookingRequest = {
+      // tODO - would be less brittle to use date obs
+      day: timeSlot.start.substring(0, 10),
+      startTime: {
+        start: timeSlot.start.substring(11),
+        end: timeSlot.end.substring(11)
+      },
+      visitDuration: getDuration(timeSlot)
+    }
+    return bookingRequest
+  } else {
+    throw {
+      name: 'TypeError',
+      message: 'Unrecognised timeslot format ' + JSON.stringify(timeSlot)  
+    }
+  }
+}
+
+function getDuration (timeSlot) {
+    let startDate = new Date(timeSlot.start)
+    let endDate = new Date(timeSlot.end)
+    return Math.abs(startDate - endDate) / 36e5
 }

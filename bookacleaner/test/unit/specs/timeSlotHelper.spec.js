@@ -151,3 +151,20 @@ describe('Convert timeslot into human readable string', () => {
       expect(result).to.equal('December 5th 8:00am for 0.5 hours')
   })
 })
+
+describe('Get Booking Request from timeslot', () => {
+  it('should return a valid booking rquest from a timeslot object', () => {
+      let timeSlot = {
+        start: '2016-12-05 08:00:00',
+        end: '2016-12-05 08:30:00',
+        possible: true
+      }
+
+      let result = helper.createBookingRequestFromTimeSlot(timeSlot)
+
+      expect(result).to.have.property('day').equal('2016-12-05')
+      expect(result).to.have.property('startTime')
+      expect(result.startTime).to.have.property('start').equal('08:00:00')
+      expect(result.startTime).to.have.property('end').equal('08:30:00')
+  })
+})

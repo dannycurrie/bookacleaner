@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Calendar v-bind:timeSlots="timeSlots" v-on:timeSlotSelected="timeSlotSelected"/>
-    <BookingInfo v-bind:selectedTimeSlot="selectedTimeSlot"/>
+    <BookingInfo v-bind:selectedTimeSlot="selectedTimeSlot" v-on:sendBookingRequest="requestBooking"/>
   </div>
 </template>
 
@@ -52,6 +52,23 @@ export default {
       } else {
         console.log('Invalid selection', selection)
       }
+    },
+    /**
+     * Sends request for the currently selection timeslot
+     */
+    requestBooking: function () {
+      let request = helper.createBookingRequestFromTimeSlot(this.selectedTimeSlot)
+      Axios.post('https://private-anon-04dc74bb9a-housekeepavailability.apiary-mock.com/book/', request)
+        .then(response => {
+          if(response.status === 201){
+            console.log(response.data)
+            alert('success! Booked session with ' + response.data.cleaner.name)
+          } else {
+            alert('There was an issue requesting your booking!')
+          }
+        }).catch(error => {
+          alert('Unable to confirm booking at this time', error)
+        })
     }
   }
 }
