@@ -1,6 +1,8 @@
 # bookacleaner
 
-> Simple UI to book a visit from a cleaner
+> Simple UI to book a visit from a cleaner 
+
+Delpoyed here https://bookacleaner.herokuapp.com/
 
 ## Build Setup
 
