@@ -2,7 +2,7 @@ import Vue from 'vue'
 import BookingInfo from '@/components/BookingInfo'
 
 describe('BookingInfo.vue', () => {
-  it('should render props', () => {
+  it('should render the select slot', () => {
     const Constructor = Vue.extend(BookingInfo)
     const comp = new Constructor().$mount()
     comp.propsData = {

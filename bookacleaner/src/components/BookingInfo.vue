@@ -1,18 +1,24 @@
 <template>
 <div id="footerwrap">
 	 	<div class="container">
+
+       <!-- Availabilty info -->
 		 	<div class="row">
 		 		<div class="col-lg-4">
 		 			<h4>1. Check Availability</h4>
 		 			<div class="hline-w"></div>
 		 			<p>The open slots on the calendar are available for you to book a visit. Simply click on the day and time when you would like your visit to start, and drag the selection to extend your booking.</p>
 		 		</div>
+
+          <!-- Booking selection info -->
 		 		<div class="col-lg-4">
 		 			<h4>2. Select a slot</h4>
 		 			<div class="hline-w"></div>
           <h4 class="currentSelectionLabel" v-if="currentSelection !== ''">You've selected {{currentSelection}} </h4>
           <h6 v-if="currentSelection == ''">Select an available slot from the calendar</h6>
          </div>
+
+         <!-- Request booking -->
 		 		<div class="col-lg-4">
 		 			<h4>3. Book your cleaning visit!</h4>
 		 			<div class="hline-w"></div>
@@ -44,6 +50,12 @@ export default {
     }
   },
   watch: {
+    /**
+     * When selected timeslot changes, display current selection
+     * 
+     * NOTE: not using arrow funcitons here to avoid context issues
+     * see https://vuejsfeed.com/blog/using-es6-arrow-functions-in-vue-modules 
+     */
     selectedTimeSlot: { handler: function () {
       // if the slot is empty, clear current selection
       if (!this.selectedTimeSlot) {
@@ -57,7 +69,7 @@ export default {
     }
   },
   methods: {
-    sendBookingRequest: function () {
+    sendBookingRequest () {
       this.$emit('sendBookingRequest')
     }
   }

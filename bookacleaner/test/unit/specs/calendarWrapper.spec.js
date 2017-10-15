@@ -1,8 +1,8 @@
 const calendarWrapper = require('../../../src/components/calendarWrapper').calendarWrapper()
 const expect = require('chai').expect
 
-describe('Convert timeslpots to FC events', () => {
-  it('takes timeslot data and creates an array of fc events', () => {
+describe('createFCEvents', () => {
+  it('should creates an array of fc events', () => {
     let timeSlots = [
       {
         start: '2016-12-05 08:00:00',

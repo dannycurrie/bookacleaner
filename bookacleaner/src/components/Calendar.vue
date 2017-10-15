@@ -25,8 +25,11 @@ export default {
   watch: {
     /*
      * when timeslots changes, initialise or refresh the calendar
+     * 
+     * NOTE: not using arrow funcitons here to avoid context issues
+     * see https://vuejsfeed.com/blog/using-es6-arrow-functions-in-vue-modules 
      */
-    timeSlots: {handler: function () {
+    timeSlots: { handler: function () {
         if(!this.init) {
           calendarWrapper.initCalendar()
           this.init = true
@@ -38,13 +41,19 @@ export default {
     }
   },
   methods: {
-    selectSlot: function (event) {
+    /**
+     * Create timeslot selection and fire event
+     */
+    selectSlot (event) {
       //  create slot to represent selection
       let slot = helper.createSlotFromEvent(event, false, true)
       // emit selection event
       this.$emit('timeSlotSelected', slot)
     },
-    changeSlotDuration: function (event) {
+    /**
+     * Extend current timeslot selection and fire event
+     */
+    changeSlotDuration (event) {
       //  create slot to represent selection, including new end date
       let slot = helper.createSlotFromEvent(event, true, true)
       // emit selection event

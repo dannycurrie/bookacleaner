@@ -37,18 +37,18 @@ export default {
         this.timeSlots = helper.createTimeSlotsFromAPIData(response.data)
       }).catch(error => {
         console.log(error)
-        // TODO - handle this more gracefully
+        // TODO - put in a modal dialog
         alert('We were unable to find the availability for this week!')
       })
   },
   methods: {
     /*
      * Begins a new selection
-     * Not using arrow functions here to avoid context issues
      */
-    timeSlotSelected: function (selection) {
+    timeSlotSelected (selection) {
       // deselect previous selection
       this.timeSlots.map(slot => slot.selected = false)
+      // find selected timeslot
       this.selectedTimeSlot = helper.findMatchingTimeSlot(selection, this.timeSlots)
       // if we have a valid selection
       if(this.selectedTimeSlot) {
@@ -59,25 +59,32 @@ export default {
         }
       } else {
         console.log('Invalid selection', selection)
+        // TODO - put in a modal dialog
+        alert('We were unable to book that slot. Please try another')
       }
     },
     /**
      * Sends request for the currently selection timeslot
      */
-    requestBooking: function () {
+    requestBooking () {
+      // create request from current selected slot, and post it
       let request = helper.createBookingRequestFromTimeSlot(this.selectedTimeSlot)
       Axios.post('https://private-anon-04dc74bb9a-housekeepavailability.apiary-mock.com/book/', request)
         .then(response => {
+          // if successfull..
           if(response.status === 201){
             console.log(response.data)
+            // show confirmation
             let cleaner = response.data.cleaner.name
             this.confirmationMessage = 'Slot booked with ' + cleaner + ' on ' + helper.getReadableTimeSlotString(this.selectedTimeSlot)
             this.$refs.successModal.open()
           } else {
+            // TODO - modal dialog
             alert('There was an issue requesting your booking!')
           }
         }).catch(error => {
-          alert('Unable to confirm booking at this time', error)
+          // TODO - modal dialog
+          alert('There was an issue requesting your booking!', error)
         })
     }
   }

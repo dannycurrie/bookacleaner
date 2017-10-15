@@ -1,8 +1,8 @@
 const helper = require('../../../src/timeSlotHelper')
 const chai = require('chai')
 
-describe('Convert raw data to time slots', () => {
-  it('takes nested raw api data and creates flat list of time slots', () => {
+describe('createTimeSlotsFromAPIData', () => {
+  it('should take nested raw api data and create flat list of time slots', () => {
     let rawData = [
         {
           "day": "2016-12-05",
@@ -79,8 +79,8 @@ describe('Convert raw data to time slots', () => {
   })
 })
 
-describe('Find a matching timeslot in a collection of timeslots', () => {
-  it('takes a timeslot and looks for a matching timeslot in the collection', () => {
+describe('findMatchingTimeSlot', () => {
+  it('should take a timeslot and find a matching timeslot in the collection', () => {
     let timeSlots = [
       {
         start: '2016-12-05 08:00:00',
@@ -138,7 +138,7 @@ describe('Find a matching timeslot in a collection of timeslots', () => {
   })
 })
 
-describe('Convert timeslot into human readable string', () => {
+describe('getReadableTimeSlotString', () => {
   it('should take a time slot and create a readable string', () => {
     let timeSlot = {
         start: '2016-12-05 08:00:00',
@@ -152,7 +152,7 @@ describe('Convert timeslot into human readable string', () => {
   })
 })
 
-describe('Get Booking Request from timeslot', () => {
+describe('createBookingRequestFromTimeSlot', () => {
   it('should return a valid booking rquest from a timeslot object', () => {
       let timeSlot = {
         start: '2016-12-05 08:00:00',
